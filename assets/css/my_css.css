@@ -8,7 +8,7 @@ body{
 canvas {
     background-color: whitesmoke;
     outline: 10px solid darkgrey;
-    cursor: url(http://www.rw-designer.com/cursor-view/12350.png) 15 35,auto;
+    cursor: url(../cursors/brush.png) 15 35,auto;
 }
 
 .button , .tools {
@@ -20,5 +20,5 @@ canvas {
 }
 
 .erase {
-    cursor: url(http://www.rw-designer.com/cursor-view/85157.png) 10 10, auto !important;
+    cursor: url(../cursors/eraser.png) 10 10, auto !important;
 }
