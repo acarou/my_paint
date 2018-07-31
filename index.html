@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>my_paint</title>
+    <script src="assets/js/jquery-3.3.1.min.js"></script>
+    <script src="assets/js/my_paint.js"></script>
+    <link rel="stylesheet" href="assets/css/my_css.css">
+</head>
+<body>
+<h1>MY_PAINT</h1>
+<div class="debug">
+    <ul>
+        <li id="x">x : 0</li>
+        <li id="y">y : 0</li>
+        <li id="used_tools">tools : brush</li>
+    </ul>
+</div>
+<canvas id="canvas" width="800" height="500"></canvas>
+<ul class="button">
+    <li>select your color : <input id="color_picker" type="color"></li>
+    <li><input id="brush_size" type="range" min="2" max="50" value="5">
+        <output id="brush_info">5 pixels</output>
+    </li>
+    <li><button id="clear">clear</button></li>
+    <li><button id="undo">undo</button></li>
+    <li><button id="save">save</button></li>
+    <li><button id="erease">erease</button></li>
+</ul>
+
+<ul class="tools">
+    <li><button id="brush">brush</button></li>
+    <li><button id="line">line</button></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>
+</body>
+</html>
