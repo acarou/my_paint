@@ -5,46 +5,89 @@ $(document).ready(function () {
         strokes = [],
         color = '#000000',
         last_color = null,
-        tools = 'brush';
-
+        tools = 'brush',
+        segondClick = null,
+        firstX,
+        firstY,
+        last_tools;
 
 
     $('#canvas').mousedown(function () {
-        draw = true;
-    });
-
-    $('#canvas').mousemove(function (event) {
-        let cursorX = event.pageX-this.offsetLeft;
-        let cursorY = event.pageY-this.offsetTop;
+        let cursorX = event.pageX - this.offsetLeft;
+        let cursorY = event.pageY - this.offsetTop;
         let width_brush = $('#brush_size').val();
         context = this.getContext("2d");
-        $('#x').text('x : '+cursorX);
-        $('#y').text('y : '+cursorY);
-        $('#used_tools').text('tools : '+tools);
+        if (tools == 'brush') {
+            draw = true;
+        }
+        else if (tools == 'line') {
 
-        if (draw) {
-            if (tools == "brush") {
-                if (!started) {
-                    context.beginPath();
-                    context.moveTo(cursorX, cursorY);
-                    started = true;
-                }
-                else {
-                    context.lineTo(cursorX, cursorY);
-                    context.strokeStyle = color;
-                    context.lineWidth = width_brush;
-                    context.lineCap = "round";
-                    context.stroke();
-
-                }
+            if (!segondClick) {
+                context.beginPath();
+                context.moveTo(cursorX, cursorY);
+                segondClick = true;
             }
-            else if (tools == "line") {
+            else {
+                context.lineTo(cursorX, cursorY);
+                context.strokeStyle = color;
+                context.lineWidth = width_brush;
+                context.lineCap = "round";
+                context.stroke();
+                segondClick = false;
+            }
+        }
+        else if (tools == 'square') {
 
+            if (!segondClick)  {
+                console.log('permier click');
+                firstX = cursorX
+                firstY = cursorY;
+                context.beginPath();
+                context.moveTo(cursorX, cursorY);
+                segondClick = true;
+            }
+            else
+            {
+                console.log('deuxiéme click');
+                context.strokeStyle = color;
+                context.lineWidth = width_brush;
+                console.log(firstX);
+                console.log(firstY);
+                console.log(cursorX);
+                console.log(cursorY);
+                context.rect(firstX,firstY,cursorX-firstX,cursorY-firstY);
+                context.stroke();
+                segondClick = false;
             }
         }
     });
 
-    $(this).one('mouseover',function f() {
+    $('#canvas').mousemove(function (event) {
+        let cursorX = event.pageX - this.offsetLeft;
+        let cursorY = event.pageY - this.offsetTop;
+        let width_brush = $('#brush_size').val();
+        context = this.getContext("2d");
+        $('#x').text('x : ' + cursorX);
+        $('#y').text('y : ' + cursorY);
+        $('#used_tools').text('tools : ' + tools);
+
+        if (draw) {
+            if (!started) {
+                context.beginPath();
+                context.moveTo(cursorX, cursorY);
+                started = true;
+            }
+            else {
+                context.lineTo(cursorX, cursorY);
+                context.strokeStyle = color;
+                context.lineWidth = width_brush;
+                context.lineCap = "round";
+                context.stroke();
+            }
+        }
+    });
+
+    $(this).one('mousemove', function() {
         $('#canvas').trigger('mousemove');
         clean(context);
     });
@@ -54,55 +97,91 @@ $(document).ready(function () {
         started = false;
     });
 
-    $('#color_picker').on('input',function () {
+    $('#color_picker').on('input', function () {
         color = this.value;
         last_color = null;
         $('#canvas').removeClass('erase');
     });
 
-    $('#brush_size').on('input',function () {
-       $('#brush_info').val(this.value + ' pixels');
+    $('#brush_size').on('input', function () {
+        $('#brush_info').val(this.value + ' pixels');
     });
 
     $('#clear').click(function () {
         clean(context);
+        segondClick = null;
     });
 
     $('#undo').click(function () {
     });
 
     $('#save').click(function () {
-        console.log($('#canvas')[0].toDataURL("image/jpeg"));
-        window.open($('#canvas')[0].toDataURL("image/jpeg",0.1));
+        $('#canvas')[0].getContext('2d');
+        $('#canvas')[0].toDataURL();
     });
 
     $('#erease').click(function () {
+        segondClick = null;
         if (!last_color) {
+            last_tools = tools;
+            tools = 'brush';
             last_color = color;
             color = "#f5f5f5";
             $('#color_picker').val(color);
+            clearClass();
             $('#canvas').addClass('erase');
         }
         else {
+            tools = last_tools;
             color = last_color;
             $('#color_picker').val(color);
-            $('#canvas').removeClass('erase');
+            clearClass();
+            $('#canvas').addClass(tools);
             last_color = null;
 
         }
     });
 
     $('#brush').click(function () {
+        segondClick = null;
         tools = "brush";
+        clearClass();
     });
 
     $('#line').click(function () {
+        segondClick = null;
         tools = "line";
+        clearClass();
+        $('#canvas').addClass('line');
     });
+
+    $('#square').click(function () {
+        segondClick = null;
+        tools = "square";
+        clearClass();
+        $('#canvas').addClass('square');
+    })
+
+    $('#circle').click(function () {
+        segondClick = null;
+        tools = "circle";
+        clearClass();
+        $('#canvas').addClass('circle');
+
+    })
 });
 
 function clean(context) {
-    context.clearRect(0,0, $('#canvas').width(), $('#canvas').height());
-    context.fillStyle="#f5f5f5";
-    context.fillRect(0,0,$('#canvas').width(), $('#canvas').height());
+    context.clearRect(0, 0, $('#canvas').width(), $('#canvas').height());
+    context.fillStyle = "#f5f5f5";
+    context.fillRect(0, 0, $('#canvas').width(), $('#canvas').height());
+}
+
+
+function clearClass() {
+    $('#canvas').removeClass('erase');
+    $('#canvas').removeClass('line');
+    $('#canvas').removeClass('square');
+    $('#canvas').removeClass('circle');
+
 }

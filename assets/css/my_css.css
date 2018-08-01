@@ -8,7 +8,7 @@ body{
 canvas {
     background-color: whitesmoke;
     outline: 10px solid darkgrey;
-    cursor: url(../cursors/brush.png) 15 35,auto;
+    cursor: url(../cursors/brush.cur),auto;
 }
 
 .button , .tools {
@@ -20,5 +20,18 @@ canvas {
 }
 
 .erase {
-    cursor: url(../cursors/eraser.png) 10 10, auto !important;
+    cursor: url(../cursors/eraser.cur), auto !important;
+}
+
+.line {
+    cursor: url(../cursors/line.cur), auto !important;
+}
+
+.square {
+    cursor: url(../cursors/square.cur), auto !important;
+}
+
+.circle {
+    cursor: url(../cursors/circle.cur), auto !important;
+
 }
