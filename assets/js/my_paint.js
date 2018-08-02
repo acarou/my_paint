@@ -9,10 +9,11 @@ $(document).ready(function () {
         segondClick = null,
         firstX,
         firstY,
-        last_tools;
+        last_tools,
+        fill;
 
 
-    $('#canvas').mousedown(function () {
+    $('#canvas').mousedown(function (event) {
         let cursorX = event.pageX - this.offsetLeft;
         let cursorY = event.pageY - this.offsetTop;
         let width_brush = $('#brush_size').val();
@@ -47,16 +48,21 @@ $(document).ready(function () {
             }
             else
             {
-                context.strokeStyle = color;
-                context.lineWidth = width_brush;
-                context.rect(firstX,firstY,cursorX-firstX,cursorY-firstY);
+
+                if (fill) {
+                    context.fillStyle = color;
+                    context.fillRect(firstX,firstY,cursorX-firstX,cursorY-firstY);
+                } else {
+                    context.strokeStyle = color;
+                    context.lineWidth = width_brush;
+                    context.rect(firstX,firstY,cursorX-firstX,cursorY-firstY);
+                }
                 context.stroke();
                 segondClick = false;
             }
         }
         else if (tools == 'circle') {
             if (!segondClick)  {
-                console.log('permier click');
                 firstX = cursorX
                 firstY = cursorY;
                 context.beginPath();
@@ -64,10 +70,13 @@ $(document).ready(function () {
             }
             else
             {
-                console.log('deuxiéme click');
                 context.strokeStyle = color;
+                context.fillStyle = color;
                 context.lineWidth = width_brush;
-                context.arc(firstX,firstY,cursorX-firstX,0,2*Math.PI);
+                context.arc(firstX,firstY,Math.sqrt(Math.pow(firstX-cursorX,2)+Math.pow(firstY-cursorY,2)),0,2*Math.PI);
+                if (fill) {
+                    context.fill();
+                }
                 context.stroke();
                 segondClick = false;
             }
@@ -178,7 +187,7 @@ $(document).ready(function () {
         tools = "square";
         clearClass();
         $('#canvas').addClass('square');
-    })
+    });
 
     $('#circle').click(function () {
         segondClick = null;
@@ -186,7 +195,15 @@ $(document).ready(function () {
         clearClass();
         $('#canvas').addClass('circle');
 
-    })
+    });
+
+    $('#fill').change(function () {
+        if ($(this).is(':checked')) {
+            fill = true;
+        } else {
+            fill = false;
+        }
+    });
 });
 
 function clean(context) {
