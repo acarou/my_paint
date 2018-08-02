@@ -1,6 +1,6 @@
-body{
-    background: #8e9eab;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to left, #eef2f3, #8e9eab);  /* Chrome 10-25, Safari 5.1-6 */
+body {
+    background: #8e9eab; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #eef2f3, #8e9eab); /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to left, #eef2f3, #8e9eab); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     text-align: center;
 }
@@ -8,10 +8,10 @@ body{
 canvas {
     background-color: whitesmoke;
     outline: 10px solid darkgrey;
-    cursor: url(../cursors/brush.cur),auto;
+    cursor: url(../cursors/brush.cur), auto;
 }
 
-.button , .tools {
+.button, .tools, .brush_type, .debug {
     display: flex;
     justify-content: space-between;
     padding-left: 25%;
@@ -27,8 +27,8 @@ canvas {
     cursor: url(../cursors/line.cur), auto !important;
 }
 
-.square {
-    cursor: url(../cursors/square.cur), auto !important;
+.rectangle {
+    cursor: url(../cursors/rectangle.cur), auto !important;
 }
 
 .circle {
