@@ -39,7 +39,6 @@ $(document).ready(function () {
         else if (tools == 'square') {
 
             if (!segondClick)  {
-                console.log('permier click');
                 firstX = cursorX
                 firstY = cursorY;
                 context.beginPath();
@@ -48,14 +47,27 @@ $(document).ready(function () {
             }
             else
             {
+                context.strokeStyle = color;
+                context.lineWidth = width_brush;
+                context.rect(firstX,firstY,cursorX-firstX,cursorY-firstY);
+                context.stroke();
+                segondClick = false;
+            }
+        }
+        else if (tools == 'circle') {
+            if (!segondClick)  {
+                console.log('permier click');
+                firstX = cursorX
+                firstY = cursorY;
+                context.beginPath();
+                segondClick = true;
+            }
+            else
+            {
                 console.log('deuxiéme click');
                 context.strokeStyle = color;
                 context.lineWidth = width_brush;
-                console.log(firstX);
-                console.log(firstY);
-                console.log(cursorX);
-                console.log(cursorY);
-                context.rect(firstX,firstY,cursorX-firstX,cursorY-firstY);
+                context.arc(firstX,firstY,cursorX-firstX,0,2*Math.PI);
                 context.stroke();
                 segondClick = false;
             }
@@ -100,7 +112,12 @@ $(document).ready(function () {
     $('#color_picker').on('input', function () {
         color = this.value;
         last_color = null;
-        $('#canvas').removeClass('erase');
+        clear();
+        $('#canvas').addClass(last_tools);
+        if (last_tools) {
+            tools = last_tools;
+            last_tools = null;
+        }
     });
 
     $('#brush_size').on('input', function () {
@@ -138,6 +155,7 @@ $(document).ready(function () {
             clearClass();
             $('#canvas').addClass(tools);
             last_color = null;
+            last_tools = null;
 
         }
     });
