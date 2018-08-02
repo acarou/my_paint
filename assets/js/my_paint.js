@@ -204,6 +204,15 @@ $(document).ready(function () {
             fill = false;
         }
     });
+
+    $('#import').click(function () {
+        let image = $('#image').attr('src',$('#file').val());
+        console.log(image);
+        if (image) {
+            context = $('#canvas')[0].getContext("2d");
+            context.drawImage(image[0],10,10);
+        }
+    })
 });
 
 function clean(context) {
