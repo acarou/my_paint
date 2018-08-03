@@ -1,17 +1,19 @@
+let draw,
+    started = false,
+    context,
+    strokes = [],
+    color = '#000000',
+    last_color = null,
+    tools = 'brush',
+    secondClick = null,
+    firstX,
+    firstY,
+    last_tools,
+    fill,
+    brush_type,
+    image;
+
 $(document).ready(function () {
-    let draw,
-        started = false,
-        context,
-        strokes = [],
-        color = '#000000',
-        last_color = null,
-        tools = 'brush',
-        secondClick = null,
-        firstX,
-        firstY,
-        last_tools,
-        fill,
-        brush_type;
 
 
     $('#canvas').mousedown(function (event) {
@@ -206,14 +208,17 @@ $(document).ready(function () {
     });
 
     $('#import').click(function () {
-        let image = $('#image').attr('src',$('#file').val());
-        console.log(image);
         if (image) {
-            context = $('#canvas')[0].getContext("2d");
-            context.drawImage(image[0],10,10);
+            handleImage(image);
         }
+
+    });
+
+    $('#file').change(function (e) {
+        image = e;
     })
 });
+
 
 function clean(context) {
     context.clearRect(0, 0, $('#canvas').width(), $('#canvas').height());
@@ -227,4 +232,23 @@ function clearClass() {
     $('#canvas').removeClass('line');
     $('#canvas').removeClass('rectangle');
     $('#canvas').removeClass('circle');
+}
+
+function handleImage(e) {
+    let canvas = $('#canvas');
+    let reader = new FileReader();
+
+    reader.onload = function(e) {
+        let img = new Image();
+
+        img.onload = function() {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            context.drawImage(img, 0, 0);
+        }
+
+        img.src = e.target.result
+    }
+
+    reader.readAsDataURL(e.target.files[0]);
 }
